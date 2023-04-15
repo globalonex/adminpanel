@@ -21,20 +21,22 @@ class AuthController extends Controller
      * @param AuthRequest $request
      * @return JsonResponse
      */
-    function login(LoginRequest $request){
+    function login(LoginRequest $request)
+    {
         $status = $request->authenticate();
         if ($status) return $status;
 //        $request->session()->regenerate();
         $user = User::where('email', $request->email)->first();
         $authToken = $user->createToken('auth-token')->plainTextToken;
-        return response()->json(["status"=>"ok", "access_token" => $authToken]);
+        return response()->json(["status" => "ok", "access_token" => $authToken]);
     }
 
     /**
      * @param RegisterRequest $request
      * @return JsonResponse
      */
-    function register(RegisterRequest $request) {
+    function register(RegisterRequest $request)
+    {
         $user = User::create([
             'name' => "",
             'email' => $request->email,
@@ -45,17 +47,16 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return response()->json(["status"=>"ok"]);
+        return response()->json(["status" => "ok"]);
     }
-    public function logout(Request $request){
-        $request->user()->tokens()->delete();
-//        auth()->logout();
 
-        // Удаляем все данные о сессии
-//        $request->session()->invalidate();
+    public function logout(Request $request)
+    {
 
-        // Удаляем XSRF-токен из cookie
-//        $request->session()->regenerateToken();
+
+        // Удаление записи сессии из базы данных
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
 
         return response()->json([

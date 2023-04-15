@@ -37,7 +37,6 @@ import {mapActions, mapGetters, mapState} from "vuex";
 import styles from '../../components/config/styles';
 import {InertiaLink, Head} from '@inertiajs/inertia-vue3';
 
-
 export default {
     name: "Login",
     components: {
@@ -51,12 +50,7 @@ export default {
         ...mapGetters(['authStatus']),
     },
     created() {
-        // this.getUser()
-        // console.log(this.user)
-        // console.log(this.isLoggedIn)
-        // if (this.isLoggedIn) {
-        //     this.$inertia.visit('/admin')
-        // }
+
     },
 
 
@@ -79,7 +73,7 @@ export default {
             this.login(credentials)
                 .then((resp) => {
                     if (resp.data.status === 'ok') {
-                        this.$inertia.visit('/admin');
+                      this.$inertia.visit('/admin');
                     }
                     // Redirect to dashboard or other protected page
                 })

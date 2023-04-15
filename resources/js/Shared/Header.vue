@@ -12,6 +12,7 @@
                                     user.email
                                 }}
                             </inertia-link>
+                          <Dropdown/>
                         </div>
                     </div>
                 </div>
@@ -25,10 +26,12 @@ import {InertiaLink} from '@inertiajs/inertia-vue3'
 
 import UserIcon from './Header/UserIcon.vue'
 import {mapActions, mapGetters, mapState} from "vuex";
+import Dropdown from "./Dropdown.vue";
 
 export default {
     name: "Header",
     components: {
+      Dropdown,
         InertiaLink,
     },
     data() {
@@ -39,12 +42,7 @@ export default {
     computed: {
         ...mapGetters(['currentUser'])
     },
-    created() {
-        console.log(this.currentUser)
-    },
-    // async created() {
-    //     this.currentUser = await user.getCurrentUser();
-    // },
+
     methods: {
         // ...mapActions(['getUser']),
         logout() {

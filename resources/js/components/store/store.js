@@ -3,6 +3,7 @@ import axios from 'axios';
 import config from '../config/config';
 import apiClient from './../scripts/http/axios';
 const authPrefix = config.AUTH_PREFIX;
+import updateCookie from './../scripts/http/axios';
 
 const state = {
     user: null,
@@ -36,7 +37,7 @@ const actions = {
                 axios.defaults.headers.common.Authorization = `Bearer ${token}`;
                 commit('SET_TOKEN', token);
                 commit('SET_STATUS', 'success');
-                Promise.all(this.dispatch('getUser'))
+                // Promise.all(this.dispatch('getUser'))
                 return response
             })
             .catch((error) => {
@@ -59,7 +60,7 @@ const actions = {
         commit('CLEAR_AUTH_DATA');
         localStorage.removeItem('token');
         delete axios.defaults.headers.common.Authorization;
-        return axios.post(authPrefix + '/logout')
+        return axios.post(authPrefix + '/logout');
     },
 
     getUser({commit}) {
