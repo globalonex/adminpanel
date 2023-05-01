@@ -10,7 +10,7 @@
     <script src="{{ mix('/js/app.js') }}" defer></script>
     @inertiaHead
 </head>
-<body>
+<body class="{{Route::is('admin*') ? 'admin-layout' : 'app-layout' }}">
 @inertia
 </body>
 </html>

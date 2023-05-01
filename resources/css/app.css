@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Стили для админского layout'а */
+.admin-layout {
+    background-color: #F0F2F5;
+    /* другие стили для админского layout'а */
+}
+
+/* Стили для основного layout'а */
+.app-layout {
+    background-color: white;
+    /* другие стили для основного layout'а */
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}

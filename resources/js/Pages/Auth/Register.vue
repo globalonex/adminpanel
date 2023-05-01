@@ -70,11 +70,10 @@ export default {
       };
       this.register(credentials)
           .then((resp) => {
-            console.log(resp)
-            if (resp.data.status === 'ok') {
-              this.$inertia.visit('/admin');
-            }
-            // Redirect to dashboard or other protected page
+              if (resp.resp.data.status === 'ok') {
+                  this.$inertia.visit('/admin');
+              }
+              // Redirect to dashboard or other protected page
           })
           .catch((e) => {
             console.error(e)

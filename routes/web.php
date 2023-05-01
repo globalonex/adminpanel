@@ -20,4 +20,8 @@ Route::middleware(['authed.inertia'])->group(function ($route) {
     $route->get('/login', [MainController::class, 'login_page'])->name('login');
     $route->get('/register', [MainController::class, 'register_page'])->name('register');
 });
-Route::get('/admin', [MainController::class, "admin_page"])->middleware(['auth.inertia'])->name('admin');
+
+Route::prefix('/admin')->middleware(['auth.inertia'])->group(function ($route) {
+    $route->get('/', [MainController::class, "admin_page"])->name('admin');
+    $route->get('/dishes', [MainController::class, "dishes_page"])->name('admin.dishes');
+});

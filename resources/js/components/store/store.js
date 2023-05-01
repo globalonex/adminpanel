@@ -2,6 +2,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import config from '../config/config';
 import apiClient from './../scripts/http/axios';
+import createPersistedState from 'vuex-persistedstate';
 const authPrefix = config.AUTH_PREFIX;
 import updateCookie from './../scripts/http/axios';
 
@@ -38,7 +39,12 @@ const actions = {
                 commit('SET_TOKEN', token);
                 commit('SET_STATUS', 'success');
                 // Promise.all(this.dispatch('getUser'))
-                return response
+                return {
+                    get: this.dispatch('getUser').then(() => {
+                        commit('SET_STATUS', 'success');
+                    }),
+                    resp: response
+                };
             })
             .catch((error) => {
                 commit('SET_STATUS', 'error');
@@ -49,8 +55,18 @@ const actions = {
     },
     register({commit}, credentials) {
         return axios.post(authPrefix + '/register', credentials)
-            .then(({data}) => {
-                return data
+            .then((response) => {
+                const token = response.data.access_token;
+                localStorage.setItem('token', token);
+                axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+                commit('SET_TOKEN', token);
+                commit('SET_STATUS', 'success');
+                return {
+                    get: this.dispatch('getUser').then(() => {
+                        commit('SET_STATUS', 'success');
+                    }),
+                    resp: response
+                };
             })
             .catch((error) => {
                 throw error
@@ -84,10 +100,13 @@ const getters = {
         return state.user !== null && state.token !== null;
     },
 };
+const store = new Vuex.Store({
+        state,
+        mutations,
+        actions,
+        getters,
+    plugins: [createPersistedState()]
+    },
 
-export default new Vuex.Store({
-    state,
-    mutations,
-    actions,
-    getters,
-});
+);
+export default store;

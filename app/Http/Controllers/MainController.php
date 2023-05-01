@@ -32,7 +32,19 @@ class MainController extends Controller
 
     function admin_page() {
         return Inertia::render(self::ADMIN_PREFIX . '/Index', [
-            'title' => "Админ панель"
+            'title' => "Админ панель",
+            'breadcrumbs' => [
+                ['label' => 'Админ', 'url' => route('admin')],
+            ],
+        ]);
+    }
+    function dishes_page() {
+        return Inertia::render(self::ADMIN_PREFIX. '/Menu/Dishes', [
+            'title' => "Блюда",
+            'breadcrumbs' => [
+                ['label' => 'Меню', 'url' => route('admin')],
+                ['label' => 'Блюда', 'url' => route('admin.dishes')],
+            ],
         ]);
     }
 }

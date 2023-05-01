@@ -29,10 +29,25 @@ Route::prefix('/usergate')->group(function ($route) { // api
 //    $route->post('/reset-pass', [AuthController::class, "reset_pass"]);
 });
 
+/*
+ * TODO:
+ * - Add   GET API categories for dishes
+ * - Add   GET API products for dishes
+ * - Add   POST API create products
+ * - Add   POST API update products
+ * - Add   POST API delete products
+ * - Add   UI VUE Drawer for adding a product
+ */
 
 // Protected routes: sanctum
 Route::name('api.')->namespace('Api')->middleware(['auth:sanctum'])->group(function ($route) {
     $route->namespace('User')->group(function ($route) {
+
+    });
+    $route->namespace('Products')->group(function ($route) {
+
+    });
+    $route->namespace('Category')->group(function ($route) {
 
     });
 });

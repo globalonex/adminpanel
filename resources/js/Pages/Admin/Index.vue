@@ -1,9 +1,11 @@
 <template>
-  <div>
-    <h1 class="text-center text-2xl my-2">{{ title }}</h1>
-    <!--    <p v-if="isAuthenticated">Вы вошли в систему как {{ user.name }}</p>-->
-    <button @click="onLogout">Выйти</button>
-  </div>
+    <div class="p-3">
+        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+             role="alert">
+            <span class="font-medium">Вы успешно вошли!</span>
+        </div>
+        <p class="p-4 text-sm md:text-xl">Для того чтобы перемещаться по сайту, используйте пункты меню.</p>
+    </div>
 </template>
 
 <script>
@@ -11,29 +13,11 @@ import {mapActions, mapGetters} from "vuex";
 import http from "../../components/scripts/http/axios";
 
 export default {
-  name: "Index",
-  props: {
-    title: String,
-    user: Object
-  },
-  computed: {
-    ...mapGetters(['isAuthenticated', 'user']),
-  },
-  methods: {
-    ...mapActions(['logout']),
-    async onLogout() {
-      try {
-        this.logout().then(() => {
-          http.updateCookie().then(() => {
-            location.reload();
-          })
-        });
-      } catch (error) {
-        console.log(error)
-        throw error
-      }
+    name: "Index",
+    props: {
+        title: String,
+        user: Object
     },
-  },
 }
 </script>
 
