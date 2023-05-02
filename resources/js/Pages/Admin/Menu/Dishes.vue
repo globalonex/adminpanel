@@ -36,7 +36,7 @@
                 <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ product.name }}
                 </td>
-                <td class="px-6 py-4">{{ getCategoryNameById(product.category_id) }}</td>
+                <td class="px-6 py-4">{{ getCategoryNameById(product.categories_id) }}</td>
                 <td class="px-6 py-4">{{ product.price + symbol }}</td>
             </tr>
             </tbody>
@@ -44,13 +44,14 @@
     </div>
 
     <DrawerComponent id="drawer-right">
-<!--        {{ drawer.selectedFileName ? `Выбранный файл: ${drawer.selectedFileName}` : 'Выберите файл' }}-->
+        <!--        {{ drawer.selectedFileName ? `Выбранный файл: ${drawer.selectedFileName}` : 'Выберите файл' }}-->
         <div class="block sm:grid md:grid grid-cols-3 gap-2 mb-11">
             <div class="rounded-md mt-8 sm:mt-0 md:mt-0 border border-gray-200 border-dashed w-auto md:w-[148px] h-[260px] md:h-[148px] relative cursor-pointer md:place-self-center"
                  @click="productChooser">
                 <div class="drawer-photo-chooser">
                     <div v-if="drawer.selectedFile">
-                        <img ref="previewImage" class="w-full h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded"/>
+                        <img ref="previewImage"
+                             class="w-full h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded"/>
                     </div>
                     <div v-else>
                         <svg width="28" height="28"
@@ -81,7 +82,8 @@
                     <div>
                         <label for="small-input" :class="styles.drawer.label">Количество</label>
                         <div class="relative">
-                            <input type="number" v-model="drawer.quantity" id="small-input" :class="styles.drawer.input">
+                            <input type="number" v-model="drawer.quantity" id="small-input"
+                                   :class="styles.drawer.input">
                             <div class="absolute inset-y-0 right-0 px-2.5 flex items-center text-[#000000] bg-gray-200 rounded text-sm">
                                 шт.
                             </div>
@@ -99,17 +101,18 @@
             <button type="button" :class="styles.main.button_primary" class="mr-3.5">Сохранить</button>
             <button type="button" :class="styles.main.button_light">Отменить</button>
 
-        <div class="deleteCat pt-3">
-            <div class="flex flex-row">
-                <div class="icon">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="32" height="32" rx="16" fill="#F56C6C"/>
-                        <path d="M11.1875 12.5H10.3125C10.1848 12.5 10.0799 12.459 9.99794 12.3771C9.91598 12.2951 9.875 12.1903 9.875 12.0625C9.875 11.9348 9.91598 11.8299 9.99794 11.7479C10.0799 11.666 10.1848 11.625 10.3125 11.625H13.8125V10.3125C13.8125 10.1848 13.8535 10.0799 13.9354 9.99794C14.0174 9.91598 14.1223 9.875 14.25 9.875H17.75C17.8778 9.875 17.9826 9.91598 18.0646 9.99794C18.1465 10.0799 18.1875 10.1848 18.1875 10.3125V11.625H21.6875C21.8153 11.625 21.9201 11.666 22.0021 11.7479C22.084 11.8299 22.125 11.9348 22.125 12.0625C22.125 12.1903 22.084 12.2951 22.0021 12.3771C21.9201 12.459 21.8153 12.5 21.6875 12.5H20.8125V21.6875C20.8125 21.8153 20.7715 21.9201 20.6896 22.0021C20.6076 22.084 20.5028 22.125 20.375 22.125H11.625C11.4973 22.125 11.3924 22.084 11.3104 22.0021C11.2285 21.9201 11.1875 21.8153 11.1875 21.6875V12.5ZM17.3125 11.625V10.75H14.6875V11.625H17.3125ZM12.0625 21.25H19.9375V12.5H12.0625V21.25ZM14.6875 19.5C14.5598 19.5 14.4549 19.459 14.3729 19.3771C14.291 19.2951 14.25 19.1903 14.25 19.0625V14.6875C14.25 14.5598 14.291 14.4549 14.3729 14.3729C14.4549 14.291 14.5598 14.25 14.6875 14.25C14.8153 14.25 14.9201 14.291 15.0021 14.3729C15.084 14.4549 15.125 14.5598 15.125 14.6875V19.0625C15.125 19.1903 15.084 19.2951 15.0021 19.3771C14.9201 19.459 14.8153 19.5 14.6875 19.5ZM17.3125 19.5C17.1848 19.5 17.0799 19.459 16.9979 19.3771C16.916 19.2951 16.875 19.1903 16.875 19.0625V14.6875C16.875 14.5598 16.916 14.4549 16.9979 14.3729C17.0799 14.291 17.1848 14.25 17.3125 14.25C17.4403 14.25 17.5451 14.291 17.6271 14.3729C17.709 14.4549 17.75 14.5598 17.75 14.6875V19.0625C17.75 19.1903 17.709 19.2951 17.6271 19.3771C17.5451 19.459 17.4403 19.5 17.3125 19.5Z" fill="white"/>
-                    </svg>
+            <div class="deleteCat pt-3">
+                <div class="flex flex-row">
+                    <div class="icon">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="32" height="32" rx="16" fill="#F56C6C"/>
+                            <path d="M11.1875 12.5H10.3125C10.1848 12.5 10.0799 12.459 9.99794 12.3771C9.91598 12.2951 9.875 12.1903 9.875 12.0625C9.875 11.9348 9.91598 11.8299 9.99794 11.7479C10.0799 11.666 10.1848 11.625 10.3125 11.625H13.8125V10.3125C13.8125 10.1848 13.8535 10.0799 13.9354 9.99794C14.0174 9.91598 14.1223 9.875 14.25 9.875H17.75C17.8778 9.875 17.9826 9.91598 18.0646 9.99794C18.1465 10.0799 18.1875 10.1848 18.1875 10.3125V11.625H21.6875C21.8153 11.625 21.9201 11.666 22.0021 11.7479C22.084 11.8299 22.125 11.9348 22.125 12.0625C22.125 12.1903 22.084 12.2951 22.0021 12.3771C21.9201 12.459 21.8153 12.5 21.6875 12.5H20.8125V21.6875C20.8125 21.8153 20.7715 21.9201 20.6896 22.0021C20.6076 22.084 20.5028 22.125 20.375 22.125H11.625C11.4973 22.125 11.3924 22.084 11.3104 22.0021C11.2285 21.9201 11.1875 21.8153 11.1875 21.6875V12.5ZM17.3125 11.625V10.75H14.6875V11.625H17.3125ZM12.0625 21.25H19.9375V12.5H12.0625V21.25ZM14.6875 19.5C14.5598 19.5 14.4549 19.459 14.3729 19.3771C14.291 19.2951 14.25 19.1903 14.25 19.0625V14.6875C14.25 14.5598 14.291 14.4549 14.3729 14.3729C14.4549 14.291 14.5598 14.25 14.6875 14.25C14.8153 14.25 14.9201 14.291 15.0021 14.3729C15.084 14.4549 15.125 14.5598 15.125 14.6875V19.0625C15.125 19.1903 15.084 19.2951 15.0021 19.3771C14.9201 19.459 14.8153 19.5 14.6875 19.5ZM17.3125 19.5C17.1848 19.5 17.0799 19.459 16.9979 19.3771C16.916 19.2951 16.875 19.1903 16.875 19.0625V14.6875C16.875 14.5598 16.916 14.4549 16.9979 14.3729C17.0799 14.291 17.1848 14.25 17.3125 14.25C17.4403 14.25 17.5451 14.291 17.6271 14.3729C17.709 14.4549 17.75 14.5598 17.75 14.6875V19.0625C17.75 19.1903 17.709 19.2951 17.6271 19.3771C17.5451 19.459 17.4403 19.5 17.3125 19.5Z"
+                                  fill="white"/>
+                        </svg>
+                    </div>
+                    <span class="px-2 self-center text-sm text-[#303133]">Удалить позицию</span>
                 </div>
-                <span class="px-2 self-center text-sm text-[#303133]">Удалить позицию</span>
             </div>
-        </div>
         </div>
     </DrawerComponent>
 </template>
@@ -119,6 +122,7 @@ import InputSearchComponent from "../../../Shared/Components/InputSearchComponen
 import DrawerComponent from "../../../Shared/Components/DrawerComponent.vue";
 import CategoryComponent from "../../../Shared/Components/CategoryComponent.vue";
 import styles from "./../../../components/config/styles";
+import {getProducts, getCategories} from './../../../components/scripts/http/axios'
 
 
 export default {
@@ -127,7 +131,8 @@ export default {
     data() {
         return {
             symbol: " ₽",
-            categories: [
+            categories: [],
+            categories_b: [
                 {
                     id: 1,
                     name: "Пицца"
@@ -146,7 +151,7 @@ export default {
                 },
 
             ],
-            products: [
+            products_b: [
                 {
                     "name": "Российская",
                     "category_id": 2,
@@ -180,6 +185,7 @@ export default {
                     "image": "product3.jpg"
                 }
             ], // Данные продуктов
+            products: [],
             searchQuery: '', // Запрос для поиска
             filteredProducts: [], // Массив отфильтрованных продуктов
             selectedCategory: "", // Выбранная категория
@@ -199,6 +205,7 @@ export default {
         // Загрузка данных о продуктах и категориях при монтировании компонента
         this.loadProducts();
         this.loadCategories();
+
     },
     computed: {
         styles() {
@@ -210,13 +217,15 @@ export default {
                 filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
             }
             if (this.selectedCategory) {
-                filteredProducts = filteredProducts.filter(product => product.category_id == this.selectedCategory);
+                filteredProducts = filteredProducts.filter(product => product.categories_id == this.selectedCategory);
             }
             return filteredProducts;
         },
 
     },
     methods: {
+        getProducts, getCategories,
+
         productChooser() {
             const input = document.createElement('input');
             input.type = 'file';
@@ -239,10 +248,26 @@ export default {
         loadProducts() {
             // Загрузка данных о продуктах с сервера
             // и сохранение их в this.products
+            getProducts()
+                .then((products) => {
+                    this.products = products;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
+
         loadCategories() {
             // Загрузка данных о категориях с сервера
             // и сохранение их в this.categories
+            getCategories()
+                .then((category) => {
+                    console.log(category)
+                    this.categories = category;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
         handleProductCategory(categoryId) {
             let cat = this.categories.find(category => category.id === categoryId);

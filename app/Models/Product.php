@@ -15,10 +15,13 @@ class Product extends Model
         'image',
         'quantity',
     ];
-
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
     public $timestamps = true;
 
-    public function getCategory()
+    public function category()
     {
         return $this->belongsTo(Category::class, 'categories_id');
     }
@@ -27,8 +30,12 @@ class Product extends Model
     {
         $data = parent::toArray();
 
-        if ($this->getCategory) {
-            $data['category'] = $this->getCategory->toArray();
+//        if ($this->getCategory) {
+//            $data['category'] = $this->category->toArray();
+//        }
+
+        if ($this->category) {
+            $data['category_name'] = $this->category->name;
         }
 
         return $data;

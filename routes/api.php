@@ -42,6 +42,7 @@ Route::prefix('/usergate')->group(function ($route) { // api
  */
 
 // Protected routes: sanctum
+
 // Protected routes: sanctum
 Route::name('api.')->middleware(['auth:sanctum'])->group(function ($route) {
     // Group for User related routes
@@ -59,10 +60,13 @@ Route::name('api.')->middleware(['auth:sanctum'])->group(function ($route) {
     ]);
 
     // Group for Category related routes
-    /*
-    $route->group(function ($route) {
-        // Define routes related to Category
+    Route::group(['prefix' => 'category'], function ($route) {
+        $route->get('categories', '\App\Http\Controllers\Api\Category\CategoryController@index');
+        $route->post('categories', 'CategoryController@store');
+        $route->get('categories/{category}', 'CategoryController@show');
+        $route->put('categories/{category}', 'CategoryController@update');
+        $route->delete('categories/{category}', 'CategoryController@destroy');
     });
-    */
+
 });
 

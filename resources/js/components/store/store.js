@@ -1,10 +1,9 @@
 import Vuex from 'vuex';
 import axios from 'axios';
 import config from '../config/config';
-import apiClient from './../scripts/http/axios';
 import createPersistedState from 'vuex-persistedstate';
 const authPrefix = config.AUTH_PREFIX;
-import updateCookie from './../scripts/http/axios';
+
 
 const state = {
     user: null,

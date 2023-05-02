@@ -12,13 +12,25 @@ const apiDef = axios.create({ // template
     },
 });
 
-// const getCategories = axios.get('/api/products')
-//     .then(response => {
-//         this.products = response.data;
-//     })
-//     .catch(error => {
-//         console.error(error);
-//     });
+export function getProducts(page = 1) {
+    return axios.get(`/products?page=${page}`)
+        .then((response) => {
+            return response.data.data.data
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+export function getCategories(page = 1) {
+    return axios.get(`/category/categories`)
+        .then((response) => {
+            console.log(response.data)
+            return response.data
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
 
 const updateCookie = () => {
     document.cookie = "XSRF-TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -26,4 +38,3 @@ const updateCookie = () => {
 }
 
 
-export default {apiClient, updateCookie}
