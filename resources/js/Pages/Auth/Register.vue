@@ -71,7 +71,12 @@ export default {
       this.register(credentials)
           .then((resp) => {
               if (resp.resp.data.status === 'ok') {
-                  this.$inertia.visit('/admin');
+
+                  window.location.href = '/admin'
+                  // this.$inertia.visit('/admin', {
+                  //     replace: true,
+                  //     preserveState: true,
+                  // })
               }
               // Redirect to dashboard or other protected page
           })

@@ -50,7 +50,7 @@
                  @click="productChooser">
                 <div class="drawer-photo-chooser">
                     <div v-if="drawer.selectedFile">
-                        <img ref="previewImage" class="w-full h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md"/>
+                        <img ref="previewImage" class="w-full h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded"/>
                     </div>
                     <div v-else>
                         <svg width="28" height="28"
@@ -119,6 +119,7 @@ import InputSearchComponent from "../../../Shared/Components/InputSearchComponen
 import DrawerComponent from "../../../Shared/Components/DrawerComponent.vue";
 import CategoryComponent from "../../../Shared/Components/CategoryComponent.vue";
 import styles from "./../../../components/config/styles";
+
 
 export default {
     name: "Dishes",

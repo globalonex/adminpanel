@@ -12,14 +12,14 @@
                         </button>
                         <div class="flex space-x-4 sm:px-4 w-full justify-between">
                             <div v-if="currentUser">
-                                <inertia-link href="/admin" class="text-white font-semibold relative px-2.5 md:px-0">Складной
+                                <a href="/admin" class="text-white font-semibold relative px-2.5 md:px-0">Складной
                                     учет <span
-                                        class="text-sm font-regular absolute -top-1 -right-3">&#946;</span></inertia-link>
+                                        class="text-sm font-regular absolute -top-1 -right-3">&#946;</span></a>
                             </div>
                             <div v-else>
-                                <inertia-link href="/" class="text-white font-semibold relative px-2.5 md:px-0">Складной
+                                <a href="/" class="text-white font-semibold relative px-2.5 md:px-0">Складной
                                     учет <span
-                                        class="text-sm font-regular absolute -top-1 -right-3">&#946;</span></inertia-link>
+                                        class="text-sm font-regular absolute -top-1 -right-3">&#946;</span></a>
                             </div>
 
 

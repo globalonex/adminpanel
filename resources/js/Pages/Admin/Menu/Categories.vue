@@ -8,9 +8,6 @@
         <div class="actions flex items-center">
             <div class="actions flex md:flex-row flex-col items-center">
                 <input-search-component v-model="searchQuery" @search="handleSearch"/>
-
-                <CategoryComponent :categories="categories" v-model="selectedCategory"
-                                   @category-change="getCategoryNameById"/>
             </div>
         </div>
     </div>
@@ -20,13 +17,7 @@
             <thead class="text-xs bg_products_table text-gray-700 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3 text-sm">
-                    Наименование
-                </th>
-                <th scope="col" class="px-6 py-3 text-sm">
-                    Категория
-                </th>
-                <th scope="col" class="px-6 py-3 text-sm">
-                    Цена
+                    Название
                 </th>
             </tr>
             </thead>
@@ -36,8 +27,6 @@
                 <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ product.name }}
                 </td>
-                <td class="px-6 py-4">{{ getCategoryNameById(product.category_id) }}</td>
-                <td class="px-6 py-4">{{ product.price + symbol }}</td>
             </tr>
             </tbody>
         </table>
@@ -45,57 +34,15 @@
 
     <DrawerComponent id="drawer-right">
         <!--        {{ drawer.selectedFileName ? `Выбранный файл: ${drawer.selectedFileName}` : 'Выберите файл' }}-->
-        <div class="block sm:grid md:grid grid-cols-3 gap-2 mb-11">
-            <div class="rounded-md mt-8 sm:mt-0 md:mt-0 border border-gray-200 border-dashed w-auto md:w-[148px] h-[260px] md:h-[148px] relative cursor-pointer md:place-self-center"
-                 @click="productChooser">
-                <div class="drawer-photo-chooser">
-                    <div v-if="drawer.selectedFile">
-                        <img ref="previewImage" class="w-full h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md"/>
-                    </div>
-                    <div v-else>
-                        <svg width="28" height="28"
-                             class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                             viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                  d="M14 2.625C13.5168 2.625 13.125 3.01675 13.125 3.5V13.125H3.5C3.01675 13.125 2.625 13.5168 2.625 14C2.625 14.4832 3.01675 14.875 3.5 14.875H13.125V24.5C13.125 24.9832 13.5168 25.375 14 25.375C14.4832 25.375 14.875 24.9832 14.875 24.5V14.875H24.5C24.9832 14.875 25.375 14.4832 25.375 14C25.375 13.5168 24.9832 13.125 24.5 13.125H14.875V3.5C14.875 3.01675 14.4832 2.625 14 2.625Z"
-                                  fill="#909399"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
+        <div class="block sm:grid md:grid grid-cols-3 gap-2 mb-4">
             <div class="col-span-2 select-none mr-0 md:mr-7">
                 <div>
                     <label for="small-input" :class="styles.drawer.label">Название позиции</label>
                     <input type="text" v-model="drawer.namePosition" id="small-input" :class="styles.drawer.input">
                 </div>
-                <div class="grid gap-5 mt-3 mb-3 md:grid-cols-2">
-                    <div>
-                        <label for="small-input" :class="styles.drawer.label">Цена</label>
-                        <div class="relative">
-                            <input type="number" v-model="drawer.price" id="small-input" :class="styles.drawer.input">
-                            <div class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-[#A8ABB2]">
-                                ₽
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="small-input" :class="styles.drawer.label">Количество</label>
-                        <div class="relative">
-                            <input type="number" v-model="drawer.quantity" id="small-input" :class="styles.drawer.input">
-                            <div class="absolute inset-y-0 right-0 px-2.5 flex items-center text-[#000000] bg-gray-200 rounded text-sm">
-                                шт.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <label for="small-input" :class="styles.drawer.label">Категория</label>
-                    <CategoryComponent :categories="categories" :drawer_class="styles.drawer.input"
-                                       v-model="drawer.categoryProduct" @category-change="handleProductCategory"/>
-                </div>
             </div>
         </div>
-        <div class="group mx-0 px-0 md:mx-2 md:px-2">
+        <div class="group mx-0">
             <button type="button" :class="styles.main.button_primary" class="mr-3.5">Сохранить</button>
             <button type="button" :class="styles.main.button_light">Отменить</button>
 

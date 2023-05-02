@@ -73,8 +73,8 @@ export default {
             this.login(credentials)
                 .then((resp) => {
                     if (resp.resp.data.status === 'ok') {
-                      this.$inertia.visit('/admin');
-                        // window.location.href = '/admin';
+                      // this.$inertia.visit('/admin');
+                        window.location.href = '/admin';
                     }
                     // Redirect to dashboard or other protected page
                 })

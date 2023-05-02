@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Products\ProductController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\User\AuthController;
@@ -40,14 +42,27 @@ Route::prefix('/usergate')->group(function ($route) { // api
  */
 
 // Protected routes: sanctum
-Route::name('api.')->namespace('Api')->middleware(['auth:sanctum'])->group(function ($route) {
-    $route->namespace('User')->group(function ($route) {
+// Protected routes: sanctum
+Route::name('api.')->middleware(['auth:sanctum'])->group(function ($route) {
+    // Group for User related routes
 
-    });
-    $route->namespace('Products')->group(function ($route) {
 
-    });
-    $route->namespace('Category')->group(function ($route) {
+    // Group for Product related routes
+    $route->resource('products', ProductController::class)->names([
+        'index' => 'products.index',
+        'create' => 'products.create',
+        'store' => 'products.store',
+        'show' => 'products.show',
+        'edit' => 'products.edit',
+        'update' => 'products.update',
+        'destroy' => 'products.destroy',
+    ]);
 
+    // Group for Category related routes
+    /*
+    $route->group(function ($route) {
+        // Define routes related to Category
     });
+    */
 });
+
