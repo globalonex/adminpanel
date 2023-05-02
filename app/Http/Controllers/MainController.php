@@ -47,4 +47,13 @@ class MainController extends Controller
             ],
         ]);
     }
+    function categories_page() {
+        return Inertia::render(self::ADMIN_PREFIX. '/Menu/Categories', [
+            'title' => "Категории",
+            'breadcrumbs' => [
+                ['label' => 'Меню', 'url' => route('admin')],
+                ['label' => 'Категории', 'url' => route('admin.categories')],
+            ],
+        ]);
+    }
 }

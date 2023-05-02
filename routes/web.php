@@ -24,4 +24,5 @@ Route::middleware(['authed.inertia'])->group(function ($route) {
 Route::prefix('/admin')->middleware(['auth.inertia'])->group(function ($route) {
     $route->get('/', [MainController::class, "admin_page"])->name('admin');
     $route->get('/dishes', [MainController::class, "dishes_page"])->name('admin.dishes');
+    $route->get('/categories', [MainController::class, "categories_page"])->name('admin.categories');
 });

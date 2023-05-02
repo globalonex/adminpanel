@@ -11,9 +11,17 @@
                             </svg>
                         </button>
                         <div class="flex space-x-4 sm:px-4 w-full justify-between">
-                            <inertia-link href="/" class="text-white font-semibold relative px-2.5 md:px-0">Складной
-                                учет <span
-                                    class="text-sm font-regular absolute -top-1 -right-3">&#946;</span></inertia-link>
+                            <div v-if="currentUser">
+                                <inertia-link href="/admin" class="text-white font-semibold relative px-2.5 md:px-0">Складной
+                                    учет <span
+                                        class="text-sm font-regular absolute -top-1 -right-3">&#946;</span></inertia-link>
+                            </div>
+                            <div v-else>
+                                <inertia-link href="/" class="text-white font-semibold relative px-2.5 md:px-0">Складной
+                                    учет <span
+                                        class="text-sm font-regular absolute -top-1 -right-3">&#946;</span></inertia-link>
+                            </div>
+
 
                         </div>
                     </div>
@@ -60,7 +68,7 @@
 <script>
 import {InertiaLink} from '@inertiajs/inertia-vue3'
 
-import {mapActions, mapGetters, mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 import Dropdown from "./Dropdown.vue";
 import ExitButton from "./Components/ExitComponent.vue";
 
