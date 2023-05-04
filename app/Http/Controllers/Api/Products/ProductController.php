@@ -23,7 +23,7 @@ class ProductController extends Controller
     public function index()
     {
         try {
-            $products = Product::paginate(10);
+            $products = Product::get();//Product::paginate(10);
 
             if ($products->isEmpty()) {
                 return $this->errorResponse('No products found', 404);

@@ -15,7 +15,7 @@ const apiDef = axios.create({ // template
 export function getProducts(page = 1) {
     return axios.get(`/products?page=${page}`)
         .then((response) => {
-            return response.data.data.data
+            return response.data.data.data ?? response.data.data
         })
         .catch(error => {
             console.error(error);
@@ -24,7 +24,6 @@ export function getProducts(page = 1) {
 export function getCategories(page = 1) {
     return axios.get(`/category/categories`)
         .then((response) => {
-            console.log(response.data)
             return response.data
         })
         .catch(error => {
@@ -37,4 +36,5 @@ const updateCookie = () => {
     return apiDef.get('/sanctum/csrf-cookie');
 }
 
+export default {updateCookie}
 
