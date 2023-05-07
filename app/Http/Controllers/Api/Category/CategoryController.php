@@ -16,7 +16,11 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $category = Category::create($request->all());
+        $validatedData = $request->validate([
+            'name' => 'required|min:3|max:255',
+        ]);
+
+        $category = Category::create($validatedData);
         return response()->json($category, 201);
     }
 

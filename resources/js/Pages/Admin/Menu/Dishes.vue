@@ -114,10 +114,10 @@
                 </div>
             </div>
             <div class="group mx-0 px-0 md:mx-2 md:px-2">
-                <button type="button" @click="submitCreateForm" :class="styles.main.button_primary" class="mr-3.5">
+                <button type="button" :disabled="this.errors.drawer.isSubmitting" @click="submitCreateForm" :class="styles.main.button_primary" class="mr-3.5">
                     Сохранить
                 </button>
-                <button type="button" :class="styles.main.button_light">Отменить</button>
+                <button type="button" :class="styles.main.button_light" ref="closeDrawerButton" data-drawer-target="drawer-right" data-drawer-hide="drawer-right">Отменить</button>
 
                 <div class="deleteCat pt-3">
                     <div class="flex flex-row">
@@ -143,7 +143,7 @@ import DrawerComponent from "../../../Shared/Components/DrawerComponent.vue";
 import CategoryComponent from "../../../Shared/Components/CategoryComponent.vue";
 import styles from "./../../../components/config/styles";
 import messages from "./../../../components/config/messages";
-import {getProducts, getCategories} from './../../../components/scripts/http/axios'
+import {getProducts, getCategories, createProduct} from './../../../components/scripts/http/axios'
 
 
 export default {
@@ -206,8 +206,10 @@ export default {
         },
         hasErrors() {
             return this.errors.drawer.namePosition || this.errors.drawer.price || this.errors.drawer.quantity || this.errors.drawer.selectedFile || this.errors.drawer.categoryProduct;
+        },
+        categoryGetID() {
+            return typeof(this.drawer.categoryProduct) === "object" ? this.drawer.categoryProduct.id : this.drawer.categoryProduct
         }
-
     },
     watch: {
         'drawer.namePosition'() {
@@ -247,17 +249,57 @@ export default {
         handleSearch(searchQuery) {
             this.searchQuery = searchQuery;
         },
-        submitCreateForm(event) {
+        clearDrawerData() {
+          this.drawer.categoryProduct = {};
+          this.drawer.namePosition = null;
+          this.drawer.quantity = null;
+          this.drawer.price = null;
+          this.drawer.selectedFile = null;
+          this.drawer.selectedFileName = null;
+        },
+        submitCreateForm: async function (event) {
             this.errors.drawer.isSubmitting = true;
             this.validateNamePosition();
             this.validatePhoto();
             this.validatePrice();
             this.validateQuantity();
             this.validateCategory();
+            setInterval(() => {
+                this.errors.drawer.isSubmitting = false
+            }, 2500)
             if (!this.hasErrors) { // check if there are errors in drawer
                 // axios
-                console.log("Request");
+                let formData = new FormData();
+                formData.append('name', this.drawer.namePosition);
+                formData.append('categories_id', this.categoryGetID );
+                formData.append('price', this.drawer.price);
+                formData.append('quantity', this.drawer.quantity);
+                formData.append('image', this.drawer.selectedFile);
+                try {
+
+                    const response = await createProduct(formData).then((response) => {
+                        console.log(response.data.data.product)
+                        let resp = response.data.data.product
+                        this.products.push({
+                            id: resp.id,
+                            name: resp.name,
+                            image: resp.image,
+                            categories_id: Number(resp.categories_id),
+                            price: parseFloat(resp.price).toFixed(2),
+                            quantity: Number(resp.quantity),
+                            category_name: resp.category_name
+                        });
+                    });
+                    console.log(response.data)
+                } catch (error) {
+                    console.log(error)
+                } finally {
+                    this.$refs.closeDrawerButton.click();
+                    this.clearDrawerData(); // clear drawer data
+                    this.isSubmitting = false
+                }
             }
+
 
         },
         loadProducts() {

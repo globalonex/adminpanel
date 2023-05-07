@@ -6,15 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Products\CreateProductRequest;
 use App\Http\Requests\Api\Products\UpdateProductRequest;
 use App\Models\Product;
+use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-//    function __construct () {
-////        $this->middleware('auth:api');
-//    }
+    protected ImageService $imageService;
 
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
     /**
      * Retrieve all products
      *
@@ -63,7 +66,14 @@ class ProductController extends Controller
         try {
             $product = Product::create($request->validated());
 
-            return $this->successResponse('Product created', ['product' => $product], 201);
+            if ($request->hasFile('image')) {
+                $image = $this->imageService->uploadImage($request->file('image'));
+                $product->image = $image;
+            }
+
+            $product->save();
+
+            return $this->successResponse(['product' => $product], 201);
         } catch (\Exception $e) {
             return $this->errorResponse('Failed to create product', 500);
         }
@@ -80,7 +90,16 @@ class ProductController extends Controller
     {
         try {
             $product = Product::findOrFail($id);
+            $oldImage = $product->image;
+
             $product->update($request->all());
+
+            if ($request->hasFile('image')) {
+                $image = $this->imageService->updateImage($request->file('image'), $oldImage);
+                $product->image = $image;
+            }
+
+            $product->save();
 
             return $this->successResponse($product, 200);
         } catch (\Exception $e) {

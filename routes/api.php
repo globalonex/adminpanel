@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\Api\Products\ProductController;
 
 use Illuminate\Http\Request;
@@ -48,24 +49,23 @@ Route::name('api.')->middleware(['auth:sanctum'])->group(function ($route) {
     // Group for User related routes
 
 
-    // Group for Product related routes
-    $route->resource('products', ProductController::class)->names([
-        'index' => 'products.index',
-        'create' => 'products.create',
-        'store' => 'products.store',
-        'show' => 'products.show',
-        'edit' => 'products.edit',
-        'update' => 'products.update',
-        'destroy' => 'products.destroy',
-    ]);
+    $route->group(['prefix' => '/products'], function () use ($route) {
+        $route->get('/', [ProductController::class, 'index'])->name('products.index');
+        $route->post('/store', [ProductController::class, 'store'])->name('products.store');
+        $route->get('/{product}', [ProductController::class, 'show'])->name('products.show');
+        $route->get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        $route->put('/{product}', [ProductController::class, 'update'])->name('products.update');
+        $route->delete('/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    });
+
 
     // Group for Category related routes
-    Route::group(['prefix' => 'category'], function ($route) {
-        $route->get('categories', '\App\Http\Controllers\Api\Category\CategoryController@index');
-        $route->post('categories', 'CategoryController@store');
-        $route->get('categories/{category}', 'CategoryController@show');
-        $route->put('categories/{category}', 'CategoryController@update');
-        $route->delete('categories/{category}', 'CategoryController@destroy');
+    $route->group(['prefix' => '/category'], function ($route) {
+        $route->get('categories', [CategoryController::class, 'index']);
+        $route->post('store', [CategoryController::class, 'store']);
+        $route->get('categories/{category}', [CategoryController::class, 'show']);
+        $route->put('categories/{category}', [CategoryController::class, 'update']);
+        $route->delete('categories/{category}', [CategoryController::class, 'destroy']);
     });
 
 });

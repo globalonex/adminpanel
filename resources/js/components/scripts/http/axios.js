@@ -21,6 +21,7 @@ export function getProducts(page = 1) {
             console.error(error);
         });
 }
+
 export function getCategories(page = 1) {
     return axios.get(`/category/categories`)
         .then((response) => {
@@ -29,6 +30,17 @@ export function getCategories(page = 1) {
         .catch(error => {
             console.error(error);
         });
+}
+
+export async function createProduct(product) {
+    return await axios.post('/products/store', product, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+}
+export async function createCategory(category) {
+    return await axios.post('/category/store', category)
 }
 
 const updateCookie = () => {

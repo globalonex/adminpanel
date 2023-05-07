@@ -38,13 +38,15 @@
             <div class="col-span-2 select-none mr-0 md:mr-7">
                 <div>
                     <label for="small-input" :class="styles.drawer.label">Название позиции</label>
-                    <input type="text" v-model="drawer.namePosition" id="small-input" :class="styles.drawer.input">
+                    <input type="text" v-model="drawer.namePosition" id="small-input" :class="errors.drawer.namePosition ? this.errorCheckInput  : styles.drawer.input">
+                    <p v-if="errors.drawer.namePosition" class="mt-2 text-sm text-red-600 dark:text-red-500">
+                        {{ messages.createDrawer.namePosition }}</p>
                 </div>
             </div>
         </div>
         <div class="group mx-0">
-            <button type="button" :class="styles.main.button_primary" class="mr-3.5">Сохранить</button>
-            <button type="button" :class="styles.main.button_light">Отменить</button>
+            <button type="button" :class="styles.main.button_primary" @click="createCategory" class="mr-3.5">Сохранить</button>
+            <button type="button" :class="styles.main.button_light" ref="closeDrawerButton" data-drawer-target="drawer-right" data-drawer-hide="drawer-right">Отменить</button>
 
             <div class="deleteCat pt-3">
                 <div class="flex flex-row">
@@ -66,6 +68,8 @@ import InputSearchComponent from "../../../Shared/Components/InputSearchComponen
 import DrawerComponent from "../../../Shared/Components/DrawerComponent.vue";
 import CategoryComponent from "../../../Shared/Components/CategoryComponent.vue";
 import styles from "./../../../components/config/styles";
+import {createCategory, createProduct, getCategories} from "../../../components/scripts/http/axios";
+import messages from "../../../components/config/messages";
 
 export default {
     name: "Dishes",
@@ -73,94 +77,47 @@ export default {
     data() {
         return {
             symbol: " ₽",
-            categories: [
-                {
-                    id: 1,
-                    name: "Пицца"
-                },
-                {
-                    id: 2,
-                    name: "Роллы"
-                },
-                {
-                    id: 3,
-                    name: "Китайская кухня"
-                },
-                {
-                    id: 4,
-                    name: "Категория 3"
-                },
-
-            ],
-            products: [
-                {
-                    "name": "Российская",
-                    "category_id": 2,
-                    "category": "Роллы",
-                    "price": 1000,
-                    "quantity": 10,
-                    "image": "product1.jpg"
-                },
-                {
-                    "name": "Американская",
-                    "category_id": 2,
-                    "price": 2000,
-                    "category": "Роллы",
-                    "quantity": 5,
-                    "image": "product2.jpg"
-                },
-                {
-                    "name": "Продукт 3",
-                    "category_id": 1,
-                    "price": 4500,
-                    "category": "Пицца",
-                    "quantity": 8,
-                    "image": "product3.jpg"
-                },
-                {
-                    "name": "Продукт 4",
-                    "category_id": 3,
-                    "price": 8500,
-                    "category": "Китайская кухня",
-                    "quantity": 8,
-                    "image": "product3.jpg"
-                }
-            ], // Данные продуктов
+            categories: [],
             searchQuery: '', // Запрос для поиска
             filteredProducts: [], // Массив отфильтрованных продуктов
             selectedCategory: "", // Выбранная категория
-
+            errors: {
+              drawer: {
+                  namePosition: false,
+              }
+            },
             drawer: {
                 namePosition: null,
-                price: null,
-                quantity: null,
-                categoryProduct: {},
-                selectedFile: null,
-                selectedFileName: null,
-
             }
         };
     },
     mounted() {
         // Загрузка данных о продуктах и категориях при монтировании компонента
-        this.loadProducts();
         this.loadCategories();
     },
     computed: {
+        messages() {
+            return messages
+        },
+        errorCheckInput() {
+            return styles.drawer.input + ' bg-red-50 border border-red-500 text-red-900 placeholder-red-700 rounded text-sm focus:ring-red-500';
+        },
         styles() {
             return styles
         },
         filteredProducts() {
-            let filteredProducts = this.products;
+            let filteredProducts = this.categories;
             if (this.searchQuery) {
                 filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
-            }
-            if (this.selectedCategory) {
-                filteredProducts = filteredProducts.filter(product => product.category_id == this.selectedCategory);
             }
             return filteredProducts;
         },
 
+    },
+    watch: {
+        'drawer.namePosition'() {
+            this.validateNamePosition();
+        },
     },
     methods: {
         productChooser() {
@@ -186,9 +143,39 @@ export default {
             // Загрузка данных о продуктах с сервера
             // и сохранение их в this.products
         },
+        clearDrawerData() {
+          this.drawer.namePosition = "";
+        },
+        async createCategory() {
+            this.validateNamePosition();
+            if (this.drawer.namePosition.length !== 0 && this.drawer.namePosition.length >= 3) {
+                try {
+                    const response = await createCategory({name: this.drawer.namePosition}).then((response) => {
+                        let category = response.data;
+                        this.categories.push({
+                            id: category.id,
+                            name: category.name,
+                        })
+                    });
+                } catch (error) {
+                    console.log(error)
+                } finally {
+                    this.$refs.closeDrawerButton.click();
+                    this.clearDrawerData(); // clear drawer data
+                    this.isSubmitting = false
+                }
+            }
+        },
         loadCategories() {
             // Загрузка данных о категориях с сервера
             // и сохранение их в this.categories
+            getCategories()
+                .then((category) => {
+                    this.categories = category;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
         handleProductCategory(categoryId) {
             let cat = this.categories.find(category => category.id === categoryId);
@@ -198,6 +185,10 @@ export default {
             let category = this.categories.find(category => category.id === categoryId);
             return category ? category.name : '';
         },
+        validateNamePosition() {
+            this.errors.drawer.namePosition = this.drawer.namePosition === null || this.drawer.namePosition.length < 3;
+        },
+
     },
 
 }
